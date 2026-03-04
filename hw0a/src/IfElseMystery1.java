@@ -30,5 +30,5 @@ public class IfElseMystery1 {
 /* Before running the code, type your answer below.
 
 TODO: Write output here
-
+跳过,已完成
 Then, click the green play button to check your work. */
