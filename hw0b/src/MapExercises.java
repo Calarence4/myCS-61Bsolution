@@ -9,7 +9,8 @@ public class MapExercises {
     public static Map<Character, Integer> letterToNum() {
         Map<Character, Integer> out=new HashMap<>();
         for(int i=1;i<=26;i++){
-            out.put((char)+38,i);
+            int tmp='a'+i-1;
+            out.put((char)tmp,i);
         }
         return out;
     }
@@ -21,7 +22,7 @@ public class MapExercises {
         Map<Integer, Integer> out=new HashMap<>();
         for(int i=0;i<nums.size();i++){
             int tmp=nums.get(i);
-            out.put(tmp,(int)Math.pow(i,2));
+            out.put(tmp,(int)Math.pow(tmp,2));
         }
         return out;
     }
