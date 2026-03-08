@@ -21,21 +21,23 @@ public class GameLogic {
             return 0;
         }
         int countElements =0;//(r,c)上方的元素个数
-        for(int i=r-1;i>=0;i--){//不会越界
+        for(int i=r-1;i>=0;i--){//计算上方元素,不会越界
             if(board[i][c]!=0){
                 countElements++;
             }
         }
         int emptyTiles = r-countElements;
-        if(r-emptyTiles-1>=0&&board[r-emptyTiles-1][c]==board[r][c]){//合并
-            board[r-emptyTiles-1][c]*=2;
+        int goatRow=r-emptyTiles;
+        if(goatRow-1>=Math.max(0,minR)&&board[goatRow-1][c]==board[r][c]){//合并
+            goatRow -=1;
+            board[goatRow][c]*=2;
             board[r][c]=0;
-            return r-emptyTiles;
+            return 1+goatRow;
         }
-        if(emptyTiles==0){//无法移动
+        if(emptyTiles==0||goatRow < minR){//无法移动
             return 0;
         }
-        board[r-emptyTiles][c]=board[r][c];
+        board[goatRow][c]=board[r][c];
         board[r][c]=0;
         return 0;
     }
