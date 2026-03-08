@@ -1,8 +1,6 @@
 package game2048logic;
 
 import game2048rendering.Side;
-import static game2048logic.MatrixUtils.rotateLeft;
-import static game2048logic.MatrixUtils.rotateRight;
 
 /**
  * @author  Josh Hug
@@ -19,7 +17,19 @@ public class GameLogic {
      *              if no merge occurs, then return 0.
      */
     public static int moveTileUpAsFarAsPossible(int[][] board, int r, int c, int minR) {
-        // TODO: Fill this in in tasks 2, 3, 4
+        if(r==0){//边界情况
+            return 0;
+        }
+        int countElement=0;//(r,c)上方的元素个数
+        int moveStep=0;
+        for(int i=r-1;i>=0;i--){
+            if(board[i][c]!=0){
+                countElement++;
+            }
+        }
+        moveStep=r-countElement;
+        board[r-moveStep][c]=board[r][c];
+        board[r][c]=0;
         return 0;
     }
 
