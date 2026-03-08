@@ -50,8 +50,10 @@ public class GameLogic {
      * @param c         the column to tilt up.
      */
     public static void tiltColumn(int[][] board, int c) {
-        // TODO: fill this in in task 5
-        return;
+        int minR=0;
+        for(int i=0;i<4;i++){
+            minR=moveTileUpAsFarAsPossible(board,i,c,minR);
+        }
     }
 
     /**
@@ -60,7 +62,9 @@ public class GameLogic {
      * @param board     the current state of the board.
      */
     public static void tiltUp(int[][] board) {
-        // TODO: fill this in in task 6
+        for(int i=0;i<4;i++){
+            tiltColumn(board,i);
+        }
         return;
     }
 
@@ -72,14 +76,25 @@ public class GameLogic {
      * @param side  the direction to tilt
      */
     public static void tilt(int[][] board, Side side) {
-        // TODO: fill this in in task 7
         if (side == Side.EAST) {
+            MatrixUtils.rotateLeft(board);
+            tiltUp(board);
+            MatrixUtils.rotateRight(board);
             return;
         } else if (side == Side.WEST) {
+            MatrixUtils.rotateRight(board);
+            tiltUp(board);
+            MatrixUtils.rotateLeft(board);
             return;
         } else if (side == Side.SOUTH) {
+            MatrixUtils.rotateLeft(board);
+            MatrixUtils.rotateLeft(board);
+            tiltUp(board);
+            MatrixUtils.rotateRight(board);
+            MatrixUtils.rotateRight(board);
             return;
         } else {
+            tiltUp(board);
             return;
         }
     }
