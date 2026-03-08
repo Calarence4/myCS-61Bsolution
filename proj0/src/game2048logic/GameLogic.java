@@ -17,18 +17,25 @@ public class GameLogic {
      *              if no merge occurs, then return 0.
      */
     public static int moveTileUpAsFarAsPossible(int[][] board, int r, int c, int minR) {
-        if(r==0){//边界情况
+        if(board[r][c]==0){//空元素
             return 0;
         }
-        int countElement=0;//(r,c)上方的元素个数
-        int moveStep=0;
-        for(int i=r-1;i>=0;i--){
+        int countElements =0;//(r,c)上方的元素个数
+        for(int i=r-1;i>=0;i--){//不会越界
             if(board[i][c]!=0){
-                countElement++;
+                countElements++;
             }
         }
-        moveStep=r-countElement;
-        board[r-moveStep][c]=board[r][c];
+        int emptyTiles = r-countElements;
+        if(r-emptyTiles-1>=0&&board[r-emptyTiles-1][c]==board[r][c]){//合并
+            board[r-emptyTiles-1][c]*=2;
+            board[r][c]=0;
+            return r-emptyTiles;
+        }
+        if(emptyTiles==0){//无法移动
+            return 0;
+        }
+        board[r-emptyTiles][c]=board[r][c];
         board[r][c]=0;
         return 0;
     }
