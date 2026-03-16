@@ -57,4 +57,76 @@ public class LinkedListDeque61BTest {
      }
 
     // Below, you'll write your own tests for LinkedListDeque61B.
+    @Test
+    public void isEmptyTest() {
+        Deque61B<Integer> input = new LinkedListDeque61B<>();
+        assertThat(input.isEmpty()).isTrue();
+        input.addLast(0);   // [0]
+        input.addLast(1);   // [0, 1]
+        input.addFirst(-1); // [-1, 0, 1]
+        input.addLast(2);   // [-1, 0, 1, 2]
+        input.addFirst(-2); // [-2, -1, 0, 1, 2]
+        
+        assertThat(input.isEmpty()).isFalse();
+    }
+    
+    @Test
+    public void sizeTest() {
+         Deque61B<Integer> input = new LinkedListDeque61B<>();
+         assertThat(input.size()==0).isTrue();
+         input.addFirst(0);
+         assertThat(input.size()==1).isTrue();
+         input.addLast(1);
+         assertThat(input.size()==2).isTrue();
+         input.addFirst(-1);
+         assertThat(input.size()==3).isTrue();
+    }
+    
+    @Test
+    public void getTest() {
+        Deque61B<Integer> input = new LinkedListDeque61B<>();
+        assertThat(input.get(-1)).isNull();
+        assertThat(input.get(1)).isNull();
+        assertThat(input.get(0)).isNull();
+        input.addLast(0);   // [0]
+        assertThat(input.get(0)).isEqualTo(0);
+        input.addLast(1);   // [0, 1]
+        assertThat(input.get(1)).isEqualTo(1);
+        input.addFirst(-1); // [-1, 0, 1]
+        assertThat(input.get(0)).isEqualTo(-1);
+        input.addLast(2);   // [-1, 0, 1, 2]
+        assertThat(input.get(0)).isEqualTo(-1);
+        input.addFirst(-2); // [-2, -1, 0, 1, 2]
+        assertThat(input.get(0)).isEqualTo(-2);
+        
+        assertThat(input.get(54654)).isNull();
+        assertThat(input.get(-4874)).isNull();
+        
+    }
+    
+    @Test
+    public void getRecursiveTest() {
+        Deque61B<Integer> input = new LinkedListDeque61B<>();
+        
+        /*空链表测试*/
+        assertThat(input.getRecursive(-1)).isNull();
+        assertThat(input.getRecursive(1)).isNull();
+        assertThat(input.getRecursive(0)).isNull();
+        
+        
+        input.addLast(0);   // [0]
+        assertThat(input.getRecursive(0)).isEqualTo(0);
+        input.addLast(1);   // [0, 1]
+        assertThat(input.getRecursive(1)).isEqualTo(1);
+        input.addFirst(-1); // [-1, 0, 1]
+        assertThat(input.getRecursive(0)).isEqualTo(-1);
+        input.addLast(2);   // [-1, 0, 1, 2]
+        assertThat(input.getRecursive(0)).isEqualTo(-1);
+        input.addFirst(-2); // [-2, -1, 0, 1, 2]
+        assertThat(input.getRecursive(0)).isEqualTo(-2);
+        
+        assertThat(input.getRecursive(54654)).isNull();
+        assertThat(input.getRecursive(-4874)).isNull();
+        
+    }
 }

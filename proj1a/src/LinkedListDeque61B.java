@@ -19,7 +19,7 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
     
     private void addFirstHelper(T x,LinkedListDeque61B<T> deck){
         Node<T> newNode=new Node<>(null,null,x);
-        deck=new LinkedListDeque61B<>(newNode,deck);
+        deck=new LinkedListDeque61B<>(newNode,deck,"front");
     }
     /**
      * Add {@code x} to the back of the deque. Assumes {@code x} is never null.
@@ -29,7 +29,13 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      */
     @Override
     public void addLast(T x) {
+        addLastHelper(x,this);
+        size++;
+    }
     
+    private void addLastHelper(T x,LinkedListDeque61B<T> deck){
+        Node<T> newNode=new Node<>(null,null,x);
+        deck=new LinkedListDeque61B<>(newNode,deck,"back");
     }
     
     /**
@@ -55,7 +61,7 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        return this.size()==0;
     }
     
     /**
@@ -65,7 +71,7 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      */
     @Override
     public int size() {
-        return 0;
+        return size;
     }
     
     /**
@@ -100,7 +106,16 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      */
     @Override
     public T get(int index) {
-        return null;
+        if(index>=this.size()){
+            return null;
+        }
+        Node<T> pointer=this.sentinel;
+        int count=-1;
+        while (count<index){
+            pointer=pointer.next;
+            count++;
+        }
+        return pointer.item;
     }
     
     /**
@@ -114,7 +129,18 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      */
     @Override
     public T getRecursive(int index) {
-        return null;
+        if(index<0||index>=this.size()){
+            return null;
+        }
+        return getRecursive(index+1,this.sentinel);
+    }
+    
+    /** 假设index合法 */
+    private T getRecursive(int index , Node<T> pointer){
+        if(index==0){
+            return pointer.item;
+        }
+        return getRecursive(index-1,pointer.next);
     }
     
     public LinkedListDeque61B(){
@@ -123,11 +149,24 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
         sentinel.next=sentinel;
     }
     
-    private LinkedListDeque61B(Node<T> newNode,LinkedListDeque61B<T> deck){
-        newNode.prev=deck.sentinel;
-        newNode.next=deck.sentinel.next;
-        deck.sentinel.next.prev=newNode;
-        deck.sentinel.next=newNode;
+    private LinkedListDeque61B(Node<T> newNode,LinkedListDeque61B<T> deck,String dirt){
+        if(dirt.equals("front")){
+            newNode.prev=deck.sentinel;
+            newNode.next=deck.sentinel.next;
+            deck.sentinel.next.prev=newNode;
+            deck.sentinel.next=newNode;
+        } else if(dirt.equals("back")) {
+            newNode.next=deck.sentinel;
+            newNode.prev=deck.sentinel.prev;
+            deck.sentinel.prev.next=newNode;
+            deck.sentinel.prev=newNode;
+        }
+        else {
+            newNode.prev=deck.sentinel;
+            newNode.next=deck.sentinel.next;
+            deck.sentinel.next.prev=newNode;
+            deck.sentinel.next=newNode;
+        }
     }
     
     private static class Node<T> {
