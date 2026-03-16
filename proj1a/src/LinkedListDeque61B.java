@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LinkedListDeque61B<T> implements Deque61B<T> {
-    private int size=0;
-    Node<T> sentinel= new Node<T>();
+    private int size = 0;
+    Node<T> sentinel = new Node<T>();
     
     /**
      * Add {@code x} to the front of the deque. Assumes {@code x} is never null.
@@ -13,14 +13,15 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      */
     @Override
     public void addFirst(T x) {
-        addFirstHelper(x,this);
+        addFirstHelper(x, this);
         size++;
     }
     
-    private void addFirstHelper(T x,LinkedListDeque61B<T> deck){
-        Node<T> newNode=new Node<>(null,null,x);
-        deck=new LinkedListDeque61B<>(newNode,deck,"front");
+    private void addFirstHelper(T x, LinkedListDeque61B<T> deck) {
+        Node<T> newNode = new Node<>(null, null, x);
+        deck = new LinkedListDeque61B<>(newNode, deck, "front");
     }
+    
     /**
      * Add {@code x} to the back of the deque. Assumes {@code x} is never null.
      *
@@ -29,13 +30,13 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      */
     @Override
     public void addLast(T x) {
-        addLastHelper(x,this);
+        addLastHelper(x, this);
         size++;
     }
     
-    private void addLastHelper(T x,LinkedListDeque61B<T> deck){
-        Node<T> newNode=new Node<>(null,null,x);
-        deck=new LinkedListDeque61B<>(newNode,deck,"back");
+    private void addLastHelper(T x, LinkedListDeque61B<T> deck) {
+        Node<T> newNode = new Node<>(null, null, x);
+        deck = new LinkedListDeque61B<>(newNode, deck, "back");
     }
     
     /**
@@ -46,10 +47,10 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
     @Override
     public List<T> toList() {
         List<T> returnList = new ArrayList<>();
-        Node<T> pointer=this.sentinel;
-        while (pointer.next!=sentinel){
+        Node<T> pointer = this.sentinel;
+        while (pointer.next != sentinel) {
             returnList.add(pointer.next.item);
-            pointer=pointer.next;
+            pointer = pointer.next;
         }
         return returnList;
     }
@@ -61,7 +62,7 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      */
     @Override
     public boolean isEmpty() {
-        return this.size()==0;
+        return this.size() == 0;
     }
     
     /**
@@ -81,7 +82,16 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      */
     @Override
     public T removeFirst() {
-        return null;
+        if (sentinel.next == sentinel) {
+            return null;
+        }
+        Node<T> pointer = sentinel.next;
+        pointer.next.prev = sentinel;
+        pointer.prev.next = pointer.next;
+        pointer.next = null;
+        pointer.prev = null;
+        size--;
+        return pointer.item;
     }
     
     /**
@@ -91,7 +101,16 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      */
     @Override
     public T removeLast() {
-        return null;
+        if (sentinel.prev == sentinel) {
+            return null;
+        }
+        Node<T> pointer = sentinel.prev;
+        pointer.prev.next = sentinel;
+        pointer.next.prev = pointer.prev;
+        pointer.prev = null;
+        pointer.next = null;
+        size--;
+        return pointer.item;
     }
     
     /**
@@ -106,13 +125,13 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      */
     @Override
     public T get(int index) {
-        if(index>=this.size()){
+        if (index >= this.size()) {
             return null;
         }
-        Node<T> pointer=this.sentinel;
-        int count=-1;
-        while (count<index){
-            pointer=pointer.next;
+        Node<T> pointer = this.sentinel;
+        int count = -1;
+        while (count < index) {
+            pointer = pointer.next;
             count++;
         }
         return pointer.item;
@@ -129,59 +148,58 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
      */
     @Override
     public T getRecursive(int index) {
-        if(index<0||index>=this.size()){
+        if (index < 0 || index >= this.size()) {
             return null;
         }
-        return getRecursive(index+1,this.sentinel);
+        return getRecursive(index + 1, this.sentinel);
     }
     
     /** 假设index合法 */
-    private T getRecursive(int index , Node<T> pointer){
-        if(index==0){
+    private T getRecursive(int index, Node<T> pointer) {
+        if (index == 0) {
             return pointer.item;
         }
-        return getRecursive(index-1,pointer.next);
+        return getRecursive(index - 1, pointer.next);
     }
     
-    public LinkedListDeque61B(){
-        sentinel.item=null;
-        sentinel.prev=sentinel;
-        sentinel.next=sentinel;
+    public LinkedListDeque61B() {
+        sentinel.item = null;
+        sentinel.prev = sentinel;
+        sentinel.next = sentinel;
     }
     
-    private LinkedListDeque61B(Node<T> newNode,LinkedListDeque61B<T> deck,String dirt){
-        if(dirt.equals("front")){
-            newNode.prev=deck.sentinel;
-            newNode.next=deck.sentinel.next;
-            deck.sentinel.next.prev=newNode;
-            deck.sentinel.next=newNode;
-        } else if(dirt.equals("back")) {
-            newNode.next=deck.sentinel;
-            newNode.prev=deck.sentinel.prev;
-            deck.sentinel.prev.next=newNode;
-            deck.sentinel.prev=newNode;
-        }
-        else {
-            newNode.prev=deck.sentinel;
-            newNode.next=deck.sentinel.next;
-            deck.sentinel.next.prev=newNode;
-            deck.sentinel.next=newNode;
+    private LinkedListDeque61B(Node<T> newNode, LinkedListDeque61B<T> deck, String dirt) {
+        if (dirt.equals("front")) {
+            newNode.prev = deck.sentinel;
+            newNode.next = deck.sentinel.next;
+            deck.sentinel.next.prev = newNode;
+            deck.sentinel.next = newNode;
+        } else if (dirt.equals("back")) {
+            newNode.next = deck.sentinel;
+            newNode.prev = deck.sentinel.prev;
+            deck.sentinel.prev.next = newNode;
+            deck.sentinel.prev = newNode;
+        } else {
+            newNode.prev = deck.sentinel;
+            newNode.next = deck.sentinel.next;
+            deck.sentinel.next.prev = newNode;
+            deck.sentinel.next = newNode;
         }
     }
     
     private static class Node<T> {
-        Node<T> prev=null;
-        Node<T> next=null;
-        T item=null;
+        Node<T> prev = null;
+        Node<T> next = null;
+        T item = null;
         
-        private Node(Node<T> prev,Node<T> next,T item){
-            this.prev=prev;
-            this.next=next;
+        private Node(Node<T> prev, Node<T> next, T item) {
+            this.prev = prev;
+            this.next = next;
             this.item = item;
         }
         
-        private Node(){
-        
+        private Node() {
+            return;
         }
     }
 }
