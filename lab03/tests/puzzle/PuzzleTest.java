@@ -16,8 +16,7 @@ public class PuzzleTest {
     static final File PUZZLE_REFERENCE = new File("tests/puzzle/PuzzleReference.txt");
 
     @Test
-    public void testPuzzle() {
-        assertThat(("" + Puzzle.puzzle()).hashCode()).isEqualTo(-32772622);
+    public void testPuzzle() {assertThat(("" + Puzzle.puzzle()).hashCode()).isEqualTo(-32772622);
 
         assertWithMessage("Looks like you modified Puzzle.java! Be sure to undo those changes.")
                 .that(readAllLines(PUZZLE_REFERENCE)).isEqualTo(readAllLines(PUZZLE_FILE));
